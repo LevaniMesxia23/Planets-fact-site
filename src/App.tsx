@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
 } from "react-router-dom";
 import GlobalStyles from "./styles/GlobalStyles";
 import Planets from "./components/Planets";
@@ -15,7 +16,8 @@ function App() {
         <GlobalStyles />
         <Header />
         <Routes>
-          <Route path={'/:id'} element={<Planets />}/>
+          <Route path="/" element={<Navigate to={'/earth'}/>}></Route>
+          <Route path={'/:planet'} element={<Planets />}/>
         </Routes>
       </Router>
     </>
