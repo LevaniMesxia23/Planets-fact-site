@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import data from "../../starter-code/data.json";
 import Burger from "../../public/assets/icon-hamburger.svg";
+import { Link } from "react-router-dom";
 
 interface Planet {
   [x: string]: any;
@@ -13,9 +14,9 @@ interface ContainerProps {
 }
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
-  const planet: Planet[] = data;
+  const planets: Planet[] = data;
   const handleBurgerClick = () => {
     setIsOpen(!isOpen);
     console.log(!isOpen);
@@ -28,8 +29,8 @@ export default function Header() {
       </div>
       <nav>
         <ul>
-          {planet.map((planet, index) => (
-            <div className="li-box">
+          {planets.map((planet, index) => (
+            <Link to={`/${planet.name}`} className="li-box">
               <div className="circles"></div>
               <li key={index}>{planet.name}</li>
               <svg
@@ -41,7 +42,7 @@ export default function Header() {
               >
                 <path opacity="0.4" d="M1 1L5 5L1 9" stroke="white" />
               </svg>
-            </div>
+            </Link>
           ))}
         </ul>
       </nav>
