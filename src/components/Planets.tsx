@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import data from "../../starter-code/data.json";
 import { useState } from "react";
+import { useContext } from "react";
+import { MyContext } from "../App";
 
 interface Planet {
   name: string;
@@ -26,6 +28,8 @@ interface Planet {
   temperature: string;
   images: {
     planet: string;
+    internal: string;
+    geology: string;
   };
   design: {
     color: string;
@@ -40,6 +44,8 @@ interface Params {
 }
 
 export default function Planets() {
+  const { isMobile, isTablet, isDesktop, images, setImages } =
+    useContext(MyContext);
   const params = useParams<Params>();
   const planetName = params.planet;
   console.log(planetName);
@@ -72,7 +78,7 @@ export default function Planets() {
           <span>{planet.viewOption.overview.content}</span>
           <div>
             <span>Source : </span>
-            <a href="">Wikipedia</a>
+            <a href={planet.viewOption.overview.source}>Wikipedia</a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="12"
@@ -90,8 +96,26 @@ export default function Planets() {
             </svg>
           </div>
         </div>
+
+        <BottomBox>
+          <div>
+            <span className="common-info-title rot-time">ROTATION TIME</span>
+            <span className="common-info">{planet?.rotation}</span>
+          </div>
+          <div>
+            <span className="common-info-title rev-time">REVOLUTION TIME</span>
+            <span className="common-info">{planet?.revolution}</span>
+          </div>
+          <div>
+            <span className="common-info-title radius">radius</span>
+            <span className="common-info">{planet?.radius}</span>
+          </div>
+          <div>
+            <span className="common-info-title ave-temp">AVERAGE TEMP.</span>
+            <span className="common-info">{planet?.temperature}</span>
+          </div>
+        </BottomBox>
       </Container>
-      ;
     </>
   );
 }
@@ -154,7 +178,7 @@ const Container = styled.div`
       font-size: 0.75rem;
       font-style: normal;
       font-weight: 400;
-      line-height: 1.5625rem; /* 208.333% */
+      line-height: 208.333%;
       opacity: 0.5;
       display: flex;
       align-items: center;
@@ -180,5 +204,46 @@ const ImageBox = styled.div`
   margin-top: 5.94rem;
   margin-bottom: 6.13rem;
   img {
+  }
+`;
+
+const BottomBox = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 1.5rem;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  margin-bottom: 2.76rem;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1rem 1.5rem;
+
+    .common-info-title {
+      color: #fff;
+      font-size: 0.5rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 200%;
+      letter-spacing: 0.04544rem;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+
+    .common-info {
+      color: #fff;
+      text-align: right;
+      font-size: 1.25rem;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      letter-spacing: -0.04688rem;
+      text-transform: uppercase;
+    }
   }
 `;

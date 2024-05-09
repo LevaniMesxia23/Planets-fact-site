@@ -93,14 +93,15 @@ const Container = styled.div<ContainerProps>`
     transition: right 0.5s ease;
     width: 100%;
     display: flex;
-    background-color: rgb(7, 7, 36);
+    background-color: rgb(7, 7, 36, 0.7);
     flex-direction: column;
     align-items: center;
     list-style-type: none;
     padding: 0 1.5rem;
     z-index: 1;
-    height: 100vh;
-    backdrop-filter: blur(${(props) => (props.isOpen ? "5px" : "0")});
+    height: 100%;
+    backdrop-filter: blur(5px);
+    padding-top: 1.5rem;
 
     .circles-li {
       display: flex;
@@ -132,6 +133,7 @@ const Container = styled.div<ContainerProps>`
         line-height: 166.667%;
         letter-spacing: 0.08525rem;
         text-transform: uppercase;
+        text-decoration: none;
       }
 
       svg {
