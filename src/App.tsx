@@ -38,7 +38,7 @@ function App() {
   const isDesktop = useMediaQuery(
     "only screen and (min-width : 1400px)"
   );
-  const [images, setImages] = useState("planet");
+  const [images, setImages] = useState("overview");
   return (
     <>
     <MyContext.Provider value={{isMobile, isTablet, isDesktop, images, setImages}}>

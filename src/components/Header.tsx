@@ -33,34 +33,33 @@ export default function Header() {
         <span className="the-planets">THE PLANETS</span>
         <img src={Burger} alt="" onClick={handleBurgerClick} />
       </div>
-      <nav>
-        <ul>
-          {planets.map((planet, index) => (
-            <Link
-              to={`/${planet.name}`}
-              className="li-box"
-              onClick={handlePlanetClick}
+
+      <ul>
+        {planets.map((planet, index) => (
+          <Link
+            to={`/${planet.name}`}
+            className="li-box"
+            onClick={handlePlanetClick}
+          >
+            <div className="circles-li">
+              <div
+                className="circles"
+                style={{ backgroundColor: planet.design.color }}
+              ></div>
+              <li key={index}>{planet.name}</li>
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="6"
+              height="10"
+              viewBox="0 0 6 10"
+              fill="none"
             >
-              <div className="circles-li">
-                <div
-                  className="circles"
-                  style={{ backgroundColor: planet.design.color }}
-                ></div>
-                <li key={index}>{planet.name}</li>
-              </div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="6"
-                height="10"
-                viewBox="0 0 6 10"
-                fill="none"
-              >
-                <path opacity="0.4" d="M1 1L5 5L1 9" stroke="white" />
-              </svg>
-            </Link>
-          ))}
-        </ul>
-      </nav>
+              <path opacity="0.4" d="M1 1L5 5L1 9" stroke="white" />
+            </svg>
+          </Link>
+        ))}
+      </ul>
     </Container>
   );
 }
@@ -133,7 +132,7 @@ const Container = styled.div<ContainerProps>`
         line-height: 166.667%;
         letter-spacing: 0.08525rem;
         text-transform: uppercase;
-        text-decoration: none;
+        text-decoration: none !important;
       }
 
       svg {

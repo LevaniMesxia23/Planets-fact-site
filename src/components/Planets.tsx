@@ -55,30 +55,52 @@ export default function Planets() {
   );
 
   console.log(planet);
+  const handleOverview = () => {
+    setImages("overview");
+  };
+
+  const handleStructure = () => {
+    setImages("structure");
+  };
+
+  const handleGeology = () => {
+    setImages("geology");
+  };
 
   return (
     <>
-      <Container>
+      <Container color={planet?.design.color}>
         <div className="header-box">
-          <span>OVERVIEW</span>
-          <span>Structure</span>
-          <span>Surface</span>
+          <span onClick={handleOverview}>OVERVIEW</span>
+          <span onClick={handleStructure}>Structure</span>
+          <span onClick={handleGeology}>Surface</span>
         </div>
 
         <ImageBox>
           <img
-            src={planet?.images.planet}
+            src={
+              (images == "structure" && planet?.images.internal) ||
+              (images == "geology" && planet?.images.planet) ||
+              planet?.images.planet
+            }
             alt=""
-            style={{ width: planet.design.overview_mobile }}
+            style={{ width: planet?.design.overview_mobile }}
           />
+          {images === "geology" && (
+            <img className="surface-img" src={planet?.images.geology} alt="" />
+          )}
         </ImageBox>
 
         <div className="planet-info">
-          <h1>{planet.name}</h1>
-          <span>{planet.viewOption.overview.content}</span>
+          <h1>{planet?.name}</h1>
+          <span>
+            {(images == "structure" && planet?.viewOption.structure.content) ||
+              (images == "geology" && planet?.viewOption.geology.content) ||
+              planet?.viewOption.overview.content}
+          </span>
           <div>
             <span>Source : </span>
-            <a href={planet.viewOption.overview.source}>Wikipedia</a>
+            <a href={planet?.viewOption.overview.source}>Wikipedia</a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="12"
@@ -121,9 +143,6 @@ export default function Planets() {
 }
 
 const Container = styled.div`
-  /* max-width: 375px;
-  min-width: 375px;
-  width: 100%; */
   .header-box {
     display: flex;
     justify-content: space-between;
@@ -140,8 +159,26 @@ const Container = styled.div`
       letter-spacing: 0.12056rem;
       text-transform: uppercase;
       opacity: 0.5;
+      position: relative;
+      transition: all 0.8s;
     }
-    span:hover {
+    span:hover,
+    span:focus {
+      opacity: 1;
+    }
+    span::after {
+      content: "";
+      height: 3px;
+      width: 100%;
+      background-color: ${props => props.color};
+      position: absolute;
+      left: 0;
+      bottom: -1.25rem;
+      opacity: 0;
+      transition: all 0.4s;
+    }
+    span:hover::after,
+    span:focus::after {
       opacity: 1;
     }
   }
@@ -166,7 +203,6 @@ const Container = styled.div`
 
     span {
       color: #fff;
-      text-align: center;
       font-size: 0.6875rem;
       font-style: normal;
       font-weight: 400;
@@ -203,7 +239,14 @@ const ImageBox = styled.div`
   justify-content: center;
   margin-top: 5.94rem;
   margin-bottom: 6.13rem;
-  img {
+  position: relative;
+
+  .surface-img {
+    width: 9.29738rem;
+    height: 8.125rem;
+    flex-shrink: 0;
+    position: absolute;
+    top: 11.5rem;
   }
 `;
 
