@@ -3,8 +3,6 @@ import styled from "styled-components";
 import data from "../../starter-code/data.json";
 import Burger from "../../public/assets/icon-hamburger.svg";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { MyContext } from "../App";
 
 interface Planet {
   [x: string]: any;
@@ -16,17 +14,19 @@ interface ContainerProps {
 }
 
 export default function Header() {
-  const { isMobile, isTablet, isDesktop } = useContext(MyContext);
 
   const [isOpen, setIsOpen] = useState(true);
 
   const planets: Planet[] = data;
   const handleBurgerClick = () => {
     setIsOpen(!isOpen);
+    // window.outerHeight = "737px"
   };
   const handlePlanetClick = () => {
     setIsOpen(!isOpen);
   };
+
+
   return (
     <Container isOpen={isOpen}>
       <div className="header-box">
@@ -37,12 +37,14 @@ export default function Header() {
       <ul>
         {planets.map((planet, index) => (
           <Link
+          key={index}
             to={`/${planet.name}`}
             className="li-box"
             onClick={handlePlanetClick}
           >
             <div className="circles-li">
               <div
+  
                 className="circles"
                 style={{ backgroundColor: planet.design.color }}
               ></div>

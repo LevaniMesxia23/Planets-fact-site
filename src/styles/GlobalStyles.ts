@@ -13,6 +13,7 @@ body{
   background-image: url(/assets/background-stars.svg);
   background-position: center;
   background-size: cover;
+  position: relative;
 }
 `;
 export default GlobalStyles;
