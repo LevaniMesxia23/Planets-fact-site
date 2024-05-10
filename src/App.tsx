@@ -14,7 +14,6 @@ import React from "react";
 import { useState } from "react";
 
 export const MyContext = React.createContext<{
-
   images: string | undefined;
   setImages: React.Dispatch<React.SetStateAction<string>>;
 }>({

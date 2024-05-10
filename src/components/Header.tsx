@@ -14,7 +14,6 @@ interface ContainerProps {
 }
 
 export default function Header() {
-
   const [isOpen, setIsOpen] = useState(true);
 
   const planets: Planet[] = data;
@@ -25,25 +24,32 @@ export default function Header() {
     setIsOpen(!isOpen);
   };
 
-
   return (
     <Container isOpen={isOpen}>
       <div className="header-box">
         <span className="the-planets">THE PLANETS</span>
         <img src={Burger} alt="" onClick={handleBurgerClick} />
+        <ul className="ul-2">
+          {planets.map((planet, index) => (
+            <Link to={`/${planet.name}`} key={index}>
+              <div>
+                <li>{planet.name}</li>
+              </div>
+            </Link>
+          ))}
+        </ul>
       </div>
 
-      <ul>
+      <ul className="ul-1">
         {planets.map((planet, index) => (
           <Link
-          key={index}
+            key={index}
             to={`/${planet.name}`}
             className="li-box"
             onClick={handlePlanetClick}
           >
             <div className="circles-li">
               <div
-  
                 className="circles"
                 style={{ backgroundColor: planet.design.color }}
               ></div>
@@ -86,7 +92,7 @@ const Container = styled.div<ContainerProps>`
     text-transform: uppercase;
   }
 
-  ul {
+  .ul-1 {
     position: absolute;
     padding-top: calc(4.31rem + 1.44rem);
     right: ${(props) => (props.isOpen ? "100%" : "0")};
@@ -135,9 +141,49 @@ const Container = styled.div<ContainerProps>`
         text-transform: uppercase;
         text-decoration: none !important;
       }
+    }
+  }
+  .ul-2 {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .header-box {
+      display: flex;
+      flex-direction: column;
+      align-items: unset;
+      gap: 2.44rem;
+      padding: 2.44rem 3.31rem 1.69rem;
 
-      svg {
+      .the-planets {
+        text-align: center;
       }
+
+      .ul-2 {
+        display: flex;
+        justify-content: space-between;
+        li {
+          color: #fff;
+          font-size: 0.6875rem;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 227.273%;
+          letter-spacing: 0.0625rem;
+          text-transform: uppercase;
+          list-style-type: none;
+          opacity: 0.7;
+        }
+        li:hover{
+          opacity: 1;
+        }
+      }
+
+      img {
+        display: none;
+      }
+    }
+
+    svg {
+      display: flex;
     }
   }
 `;

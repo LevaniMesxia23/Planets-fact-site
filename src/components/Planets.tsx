@@ -38,17 +38,20 @@ interface Planet {
     overview_desktop: string;
   };
   surface: {
-    top: string;
-  }
+    top: string | undefined;
+  };
 }
 
 interface Params {
   planet: string | undefined;
 }
 
+interface OpacityState {
+  opacity: boolean;
+}
+
 export default function Planets() {
-  const { images, setImages } =
-    useContext(MyContext);
+  const { images, setImages } = useContext(MyContext);
   const params = useParams<Params>();
   const planetName = params.planet;
 
@@ -56,42 +59,63 @@ export default function Planets() {
     (object) => object.name === planetName
   );
 
-  console.log(planet);
   const handleOverview = () => {
     setImages("overview");
+    setOpacity(opacity)
   };
 
   const handleStructure = () => {
     setImages("structure");
+    setOpacity(!opacity)
   };
 
   const handleGeology = () => {
     setImages("geology");
+    setOpacity(!opacity)
   };
+
+  // if (window.innerWidth <= 786) {
+  //   return 1
+  // }
+
+  interface OpacityState {
+    opacity: boolean;
+  }
+
+
+  const [opacity, setOpacity] = useState(true);
+
 
   return (
     <>
-      <Container color={planet?.design.color} >
-        <div className="header-box">
-          <span onClick={handleOverview}>OVERVIEW</span>
-          <span onClick={handleStructure}>Structure</span>
-          <span onClick={handleGeology}>Surface</span>
-        </div>
+      <Container color={planet?.design.color}>
+        <div className="couple-div">
+          <div className="header-box">
+            <span onClick={handleOverview}>OVERVIEW</span>
+            <span onClick={handleStructure}>Structure</span>
+            <span onClick={handleGeology}>Surface</span>
+          </div>
 
-        <ImageBox>
-          <img
-            src={
-              (images == "structure" && planet?.images.internal) ||
-              (images == "geology" && planet?.images.planet) ||
-              planet?.images.planet
-            }
-            alt=""
-            style={{ width: planet?.design.overview_mobile }}
-          />
-          {images === "geology" && (
-            <img className="surface-img" src={planet?.images.geology} alt="" />
-          )}
-        </ImageBox>
+          <ImageBox>
+            <img
+              src={
+                (images == "structure" && planet?.images.internal) ||
+                (images == "geology" && planet?.images.planet) ||
+                planet?.images.planet
+              }
+              alt=""
+              style={{ width: planet?.design.overview_mobile }}
+            />
+            {images === "geology" && (
+              <img
+                className="surface-img"
+                src={planet?.images.geology}
+                style={{ top: planet?.surface.top }}
+                alt=""
+              />
+            )}
+          </ImageBox>
+        </div>
 
         <div className="planet-info">
           <h1>{planet?.name}</h1>
@@ -102,9 +126,16 @@ export default function Planets() {
           </span>
           <div>
             <span>Source : </span>
-            <a href={(images == "structure" && planet?.viewOption.structure.source) ||
-              (images == "geology" && planet?.viewOption.geology.source) ||
-              planet?.viewOption.overview.source}>Wikipedia</a>
+            <a
+              href={
+                (images == "structure" &&
+                  planet?.viewOption.structure.source) ||
+                (images == "geology" && planet?.viewOption.geology.source) ||
+                planet?.viewOption.overview.source
+              }
+            >
+              Wikipedia
+            </a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="12"
@@ -147,6 +178,11 @@ export default function Planets() {
 }
 
 const Container = styled.div`
+
+.couple-div{
+  display: flex;
+  flex-direction: column;
+}
   .header-box {
     display: flex;
     justify-content: space-between;
@@ -174,7 +210,7 @@ const Container = styled.div`
       content: "";
       height: 3px;
       width: 100%;
-      background-color: ${props => props.color};
+      background-color: ${(props) => props.color};
       position: absolute;
       left: 0;
       bottom: -1.25rem;
@@ -236,6 +272,39 @@ const Container = styled.div`
       }
     }
   }
+
+  @media (min-width: 768px) {
+
+.couple-div{
+  display: flex;
+  flex-direction: column-reverse;
+}
+    .header-box {
+      flex-direction: column;
+      border-bottom: none;
+      gap: 1rem;
+      span {
+        width: 17.5625rem;
+        height: 2.5rem;
+        flex-shrink: 0;
+        background-color: ${(props) => props.color};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        opacity: 0.5;
+      }
+
+      span:hover::after,
+      span:focus::after {
+        opacity: 0;
+      }
+
+      span:hover {
+        opacity: 1;
+      }
+    }
+  }
 `;
 
 const ImageBox = styled.div`
@@ -250,7 +319,7 @@ const ImageBox = styled.div`
     height: 8.125rem;
     flex-shrink: 0;
     position: absolute;
-
+    top: ${(props) => props.surface};
   }
 `;
 
@@ -291,6 +360,14 @@ const BottomBox = styled.div`
       line-height: normal;
       letter-spacing: -0.04688rem;
       text-transform: uppercase;
+    }
+  }
+  @media (min-width: 768px) {
+    flex-direction: row;
+    margin-bottom: 0;
+    div {
+      flex-direction: column;
+      align-items: start;
     }
   }
 `;
