@@ -102,7 +102,9 @@ export default function Planets() {
           </span>
           <div>
             <span>Source : </span>
-            <a href={planet?.viewOption.overview.source}>Wikipedia</a>
+            <a href={(images == "structure" && planet?.viewOption.structure.source) ||
+              (images == "geology" && planet?.viewOption.geology.source) ||
+              planet?.viewOption.overview.source}>Wikipedia</a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="12"

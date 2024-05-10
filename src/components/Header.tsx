@@ -20,7 +20,6 @@ export default function Header() {
   const planets: Planet[] = data;
   const handleBurgerClick = () => {
     setIsOpen(!isOpen);
-    // window.outerHeight = "737px"
   };
   const handlePlanetClick = () => {
     setIsOpen(!isOpen);
