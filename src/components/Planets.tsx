@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import data from "../../starter-code/data.json";
 import { useState } from "react";
 import { useContext } from "react";
@@ -61,17 +61,17 @@ export default function Planets() {
 
   const handleOverview = () => {
     setImages("overview");
-    setOpacity(opacity)
+    setOpacity(opacity);
   };
 
   const handleStructure = () => {
     setImages("structure");
-    setOpacity(!opacity)
+    setOpacity(opacity);
   };
 
   const handleGeology = () => {
     setImages("geology");
-    setOpacity(!opacity)
+    setOpacity(opacity);
   };
 
   // if (window.innerWidth <= 786) {
@@ -82,13 +82,11 @@ export default function Planets() {
     opacity: boolean;
   }
 
-
   const [opacity, setOpacity] = useState(true);
-
 
   return (
     <>
-      <Container color={planet?.design.color}>
+      <Container color={planet?.design.color} opacity={opacity}>
         <div className="couple-div">
           <div className="header-box">
             <span onClick={handleOverview}>OVERVIEW</span>
@@ -176,13 +174,20 @@ export default function Planets() {
     </>
   );
 }
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 const Container = styled.div`
-
-.couple-div{
-  display: flex;
-  flex-direction: column;
-}
+  .couple-div {
+    display: flex;
+    flex-direction: column;
+  }
   .header-box {
     display: flex;
     justify-content: space-between;
@@ -219,7 +224,7 @@ const Container = styled.div`
     }
     span:hover::after,
     span:focus::after {
-      opacity: 1;
+      opacity: 0.7;
     }
   }
 
@@ -247,6 +252,7 @@ const Container = styled.div`
       font-style: normal;
       font-weight: 400;
       line-height: 200%;
+      opacity: 0.6;
     }
 
     div {
@@ -273,35 +279,49 @@ const Container = styled.div`
     }
   }
 
-  @media (min-width: 768px) {
-
-.couple-div{
-  display: flex;
-  flex-direction: column-reverse;
-}
+  @media (min-width: 797px) {
+    .planet-info {
+      width: 50%;
+      padding-left: 3rem;
+      align-items: start;
+    }
+    .couple-div {
+      display: flex;
+      flex-direction: column-reverse;
+    }
     .header-box {
       flex-direction: column;
       border-bottom: none;
       gap: 1rem;
+      position: absolute;
+      bottom: 7rem;
+      right: 3rem;
       span {
         width: 17.5625rem;
         height: 2.5rem;
         flex-shrink: 0;
-        background-color: ${(props) => props.color};
+        background-color: transparent;
         display: flex;
         align-items: center;
         justify-content: center;
         border: 1px solid rgba(255, 255, 255, 0.5);
-        opacity: 0.5;
+        opacity: 0.7;
       }
+      span:nth-child(1){
+        background-color: ${(props) => props.color};
+      }
+      span:hover{
+        background-color: ${(props) => props.color};
+      }
+
 
       span:hover::after,
       span:focus::after {
         opacity: 0;
       }
-
-      span:hover {
-        opacity: 1;
+      span:hover,
+      span:focus {
+        opacity: ${(props) => (props.opacity ? "1" : "0.2")};
       }
     }
   }
@@ -320,6 +340,9 @@ const ImageBox = styled.div`
     flex-shrink: 0;
     position: absolute;
     top: ${(props) => props.surface};
+  }
+  img {
+    animation: ${fadeIn} 1s ease-in-out;
   }
 `;
 
@@ -362,7 +385,7 @@ const BottomBox = styled.div`
       text-transform: uppercase;
     }
   }
-  @media (min-width: 768px) {
+  @media (min-width: 797px) {
     flex-direction: row;
     margin-bottom: 0;
     div {

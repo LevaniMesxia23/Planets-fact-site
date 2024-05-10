@@ -146,7 +146,7 @@ const Container = styled.div<ContainerProps>`
   .ul-2 {
     display: none;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 797px) {
     .header-box {
       display: flex;
       flex-direction: column;
