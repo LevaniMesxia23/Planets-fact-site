@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import data from "../../starter-code/data.json";
@@ -42,17 +41,11 @@ interface Planet {
   };
 }
 
-interface Params {
-  planet: string | undefined;
-}
 
-interface OpacityState {
-  opacity: boolean;
-}
 
 export default function Planets() {
   const { images, setImages } = useContext(MyContext);
-  const params = useParams<Params>();
+  const params = useParams();
   const planetName = params.planet;
 
   const planet: Planet | undefined = data.find(
@@ -74,19 +67,12 @@ export default function Planets() {
     setOpacity(opacity);
   };
 
-  // if (window.innerWidth <= 786) {
-  //   return 1
-  // }
-
-  interface OpacityState {
-    opacity: boolean;
-  }
 
   const [opacity, setOpacity] = useState(true);
 
   return (
     <>
-      <Container color={planet?.design.color} opacity={opacity}>
+      <Container color={planet?.design.color}>
         <div className="couple-div">
           <div className="header-box">
             <span onClick={handleOverview}>OVERVIEW</span>
@@ -307,21 +293,16 @@ const Container = styled.div`
         border: 1px solid rgba(255, 255, 255, 0.5);
         opacity: 0.7;
       }
-      span:nth-child(1){
+      /* span:nth-child(1){
         background-color: ${(props) => props.color};
       }
       span:hover{
         background-color: ${(props) => props.color};
-      }
-
+      } */
 
       span:hover::after,
       span:focus::after {
         opacity: 0;
-      }
-      span:hover,
-      span:focus {
-        opacity: ${(props) => (props.opacity ? "1" : "0.2")};
       }
     }
   }
@@ -339,7 +320,6 @@ const ImageBox = styled.div`
     height: 8.125rem;
     flex-shrink: 0;
     position: absolute;
-    top: ${(props) => props.surface};
   }
   img {
     animation: ${fadeIn} 1s ease-in-out;

@@ -1,13 +1,10 @@
 import Header from "./components/Header";
-import { createGlobalStyle } from "styled-components";
-import { useMediaQuery } from "@uidotdev/usehooks";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import { createContext, useContext } from 'react';
 import GlobalStyles from "./styles/GlobalStyles";
 import Planets from "./components/Planets";
 import React from "react";
