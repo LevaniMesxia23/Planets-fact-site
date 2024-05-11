@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import data from "../../starter-code/data.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { MyContext } from "../App";
 
@@ -41,8 +41,6 @@ interface Planet {
   };
 }
 
-
-
 export default function Planets() {
   const { images, setImages } = useContext(MyContext);
   const params = useParams();
@@ -67,19 +65,34 @@ export default function Planets() {
     setOpacity(opacity);
   };
 
-
   const [opacity, setOpacity] = useState(true);
+
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 797);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>
       <Container color={planet?.design.color}>
-        <div className="couple-div">
+        {isDesktop ? null : (
           <div className="header-box">
             <span onClick={handleOverview}>OVERVIEW</span>
             <span onClick={handleStructure}>Structure</span>
             <span onClick={handleGeology}>Surface</span>
           </div>
-
+        )}
+        <div className="info-image-container">
           <ImageBox>
             <img
               src={
@@ -99,42 +112,52 @@ export default function Planets() {
               />
             )}
           </ImageBox>
-        </div>
-
-        <div className="planet-info">
-          <h1>{planet?.name}</h1>
-          <span>
-            {(images == "structure" && planet?.viewOption.structure.content) ||
-              (images == "geology" && planet?.viewOption.geology.content) ||
-              planet?.viewOption.overview.content}
-          </span>
-          <div>
-            <span>Source : </span>
-            <a
-              href={
-                (images == "structure" &&
-                  planet?.viewOption.structure.source) ||
-                (images == "geology" && planet?.viewOption.geology.source) ||
-                planet?.viewOption.overview.source
-              }
-            >
-              Wikipedia
-            </a>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-            >
-              <path
-                opacity="0.5"
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M9.75002 0C10.3698 0 10.8998 0.220059 11.3397 0.660095C11.7797 1.10013 11.9998 1.63022 11.9998 2.24998V9.74994C11.9998 10.3697 11.7797 10.8997 11.3396 11.3398C10.8997 11.7799 10.3697 12 9.74994 12H2.24998C1.63025 12 1.10021 11.7799 0.660095 11.3398C0.220059 10.8997 0 10.3696 0 9.74994V2.24998C0 1.63022 0.220059 1.10021 0.660095 0.660095C1.10021 0.220059 1.63025 0 2.24998 0H9.75002ZM9.69524 6.71084C9.89825 6.62224 9.99996 6.46867 9.99996 6.24993H9.99999V2.49998C9.99999 2.36455 9.95051 2.24733 9.85165 2.14843C9.75254 2.04943 9.63531 1.9999 9.49991 1.9999H5.75007C5.53133 1.9999 5.3776 2.10156 5.2891 2.30463C5.20061 2.51825 5.23703 2.70044 5.39853 2.85149L6.52354 3.97647L2.35161 8.14845C2.25264 8.24734 2.20313 8.36459 2.20313 8.49988C2.20313 8.63522 2.25264 8.75264 2.35161 8.85142L3.14847 9.64842C3.24742 9.74731 3.36461 9.79687 3.50012 9.79687C3.63557 9.79687 3.75266 9.74731 3.85174 9.64842L8.02342 5.47649L9.14835 6.60147C9.24218 6.70033 9.3594 6.74989 9.49989 6.74989C9.56228 6.74989 9.62762 6.73686 9.69524 6.71084Z"
-                fill="white"
-              />
-            </svg>
+          <div className="info-header">
+            <div className="planet-info">
+              <h1>{planet?.name}</h1>
+              <span>
+                {(images == "structure" &&
+                  planet?.viewOption.structure.content) ||
+                  (images == "geology" && planet?.viewOption.geology.content) ||
+                  planet?.viewOption.overview.content}
+              </span>
+              <div>
+                <span>Source : </span>
+                <a
+                  href={
+                    (images == "structure" &&
+                      planet?.viewOption.structure.source) ||
+                    (images == "geology" &&
+                      planet?.viewOption.geology.source) ||
+                    planet?.viewOption.overview.source
+                  }
+                >
+                  Wikipedia
+                </a>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                >
+                  <path
+                    opacity="0.5"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M9.75002 0C10.3698 0 10.8998 0.220059 11.3397 0.660095C11.7797 1.10013 11.9998 1.63022 11.9998 2.24998V9.74994C11.9998 10.3697 11.7797 10.8997 11.3396 11.3398C10.8997 11.7799 10.3697 12 9.74994 12H2.24998C1.63025 12 1.10021 11.7799 0.660095 11.3398C0.220059 10.8997 0 10.3696 0 9.74994V2.24998C0 1.63022 0.220059 1.10021 0.660095 0.660095C1.10021 0.220059 1.63025 0 2.24998 0H9.75002ZM9.69524 6.71084C9.89825 6.62224 9.99996 6.46867 9.99996 6.24993H9.99999V2.49998C9.99999 2.36455 9.95051 2.24733 9.85165 2.14843C9.75254 2.04943 9.63531 1.9999 9.49991 1.9999H5.75007C5.53133 1.9999 5.3776 2.10156 5.2891 2.30463C5.20061 2.51825 5.23703 2.70044 5.39853 2.85149L6.52354 3.97647L2.35161 8.14845C2.25264 8.24734 2.20313 8.36459 2.20313 8.49988C2.20313 8.63522 2.25264 8.75264 2.35161 8.85142L3.14847 9.64842C3.24742 9.74731 3.36461 9.79687 3.50012 9.79687C3.63557 9.79687 3.75266 9.74731 3.85174 9.64842L8.02342 5.47649L9.14835 6.60147C9.24218 6.70033 9.3594 6.74989 9.49989 6.74989C9.56228 6.74989 9.62762 6.73686 9.69524 6.71084Z"
+                    fill="white"
+                  />
+                </svg>
+              </div>
+            </div>
+            {isDesktop ? (
+              <div className="header-box">
+                <span onClick={handleOverview}>OVERVIEW</span>
+                <span onClick={handleStructure}>Structure</span>
+                <span onClick={handleGeology}>Surface</span>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -170,10 +193,6 @@ const fadeIn = keyframes`
 `;
 
 const Container = styled.div`
-  .couple-div {
-    display: flex;
-    flex-direction: column;
-  }
   .header-box {
     display: flex;
     justify-content: space-between;
@@ -266,15 +285,19 @@ const Container = styled.div`
   }
 
   @media (min-width: 797px) {
-    .planet-info {
-      width: 50%;
-      padding-left: 3rem;
-      align-items: start;
-    }
-    .couple-div {
+    .info-header {
       display: flex;
-      flex-direction: column-reverse;
+      flex-direction: row;
+      justify-content: center;
+      gap: 4.31rem;
+      .planet-info {
+        width: 50%;
+        max-width: 500px;
+        padding-left: 3rem;
+        align-items: start;
+      }
     }
+
     .header-box {
       flex-direction: column;
       border-bottom: none;
@@ -305,6 +328,42 @@ const Container = styled.div`
         opacity: 0;
       }
     }
+  }
+  @media (min-width: 1440px) {
+    .info-image-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding-right: 10rem;
+      padding-left: 20rem;
+      gap: 8.6rem;
+      margin-top: 7.44rem;
+
+      .info-header {
+        display: flex;
+        flex-direction: column;
+        gap: 2.44rem;
+        justify-content: center;
+        align-items: start;
+
+        .planet-info {
+          width: 21.875rem;
+          padding-left: 0;
+        }
+        .header-box {
+          padding: 0;
+        }
+      }
+    }
+    .planet-info {
+      max-width: 21.875rem;
+    }
+  }
+  .header-box {
+    bottom: 8rem;
+    right: 18rem;
+    position: unset;
   }
 `;
 
@@ -372,5 +431,8 @@ const BottomBox = styled.div`
       flex-direction: column;
       align-items: start;
     }
+  }
+  @media (min-width: 1440px) {
+    margin-top: 8.75rem;
   }
 `;

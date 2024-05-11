@@ -186,4 +186,14 @@ const Container = styled.div<ContainerProps>`
       display: flex;
     }
   }
+
+  @media (min-width: 1440px) {
+    .header-box{
+      flex-direction: row;
+
+      ul{
+        gap: 2.06rem;
+      }
+    }
+  }
 `;
