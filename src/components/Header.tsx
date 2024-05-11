@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import data from "../../starter-code/data.json";
 import Burger from "../../public/assets/icon-hamburger.svg";
