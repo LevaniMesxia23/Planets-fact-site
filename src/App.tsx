@@ -13,17 +13,21 @@ import { useState } from "react";
 export const MyContext = React.createContext<{
   images: string | undefined;
   setImages: React.Dispatch<React.SetStateAction<string>>;
+  clicked: boolean;
+  setClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }>({
   images: '',
-  setImages: () => {}
+  setImages: () => {},
+  clicked: false,
+  setClicked: () => {}
 });
 
 function App() {
-
+  const [clicked, setClicked] = useState(false)
   const [images, setImages] = useState("overview");
   return (
     <>
-    <MyContext.Provider value={{images, setImages}}>
+    <MyContext.Provider value={{images, setImages,clicked,setClicked}}>
       <Router>
         <GlobalStyles />
         <Header />

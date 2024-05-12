@@ -95,6 +95,7 @@ export default function Planets() {
         <div className="info-image-container">
           <ImageBox>
             <img
+              className="main-image"
               src={
                 (images == "structure" && planet?.images.internal) ||
                 (images == "geology" && planet?.images.planet) ||
@@ -186,9 +187,14 @@ export default function Planets() {
 const fadeIn = keyframes`
   from {
     opacity: 0;
+    transform: rotate(0deg);
+  }
+  25%{
+    transform: rotate(-45deg);
   }
   to {
     opacity: 1;
+    transform: rotate(360deg);
   }
 `;
 
@@ -211,6 +217,7 @@ const Container = styled.div`
       opacity: 0.5;
       position: relative;
       transition: all 0.8s;
+      cursor: pointer;
     }
     span:hover,
     span:focus {
@@ -316,12 +323,13 @@ const Container = styled.div`
         border: 1px solid rgba(255, 255, 255, 0.5);
         opacity: 0.7;
       }
-      /* span:nth-child(1){
+      span:nth-child(1){
         background-color: ${(props) => props.color};
       }
-      span:hover{
+      span:hover,
+      span:focus{
         background-color: ${(props) => props.color};
-      } */
+      }
 
       span:hover::after,
       span:focus::after {
@@ -374,14 +382,14 @@ const ImageBox = styled.div`
   margin-bottom: 6.13rem;
   position: relative;
 
+  .main-image {
+    animation: ${fadeIn} 1s ease-in-out;
+  }
   .surface-img {
     width: 9.29738rem;
     height: 8.125rem;
     flex-shrink: 0;
     position: absolute;
-  }
-  img {
-    animation: ${fadeIn} 1s ease-in-out;
   }
 `;
 
@@ -433,6 +441,21 @@ const BottomBox = styled.div`
     }
   }
   @media (min-width: 1440px) {
-    margin-top: 8.75rem;
+    padding: 0 10.31rem;
+    margin-top: 3.75rem;
+    div {
+      color: #fff;
+      font-family: Antonio;
+      font-size: 2.5rem;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      letter-spacing: -0.09375rem;
+      text-transform: uppercase;
+
+      .common-info {
+        font-size: 2rem;
+      }
+    }
   }
 `;

@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import data from "../../starter-code/data.json";
 import Burger from "../../public/assets/icon-hamburger.svg";
 import { Link } from "react-router-dom";
+import  { keyframes } from "styled-components";
+import { MyContext } from "../App";
 
 interface Planet {
   [x: string]: any;
@@ -14,6 +16,7 @@ interface ContainerProps {
 }
 
 export default function Header() {
+  const { clicked, setClicked } = useContext(MyContext);
   const [isOpen, setIsOpen] = useState(true);
 
   const planets: Planet[] = data;
@@ -22,13 +25,15 @@ export default function Header() {
   };
   const handlePlanetClick = () => {
     setIsOpen(!isOpen);
+    setClicked(!clicked)
   };
+
 
   return (
     <Container isOpen={isOpen}>
       <div className="header-box">
         <span className="the-planets">THE PLANETS</span>
-        <img src={Burger} alt="" onClick={handleBurgerClick} />
+        <img src={Burger} alt="burger" onClick={handleBurgerClick} />
         <ul className="ul-2">
           {planets.map((planet, index) => (
             <Link to={`/${planet.name}`} key={index}>
@@ -81,6 +86,10 @@ const Container = styled.div<ContainerProps>`
     border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.2);
     min-width: 250px;
     width: 100%;
+
+    img {
+      cursor: pointer;
+    }
   }
   .the-planets {
     color: #fff;
@@ -108,6 +117,10 @@ const Container = styled.div<ContainerProps>`
     height: 100%;
     backdrop-filter: blur(5px);
     padding-top: 1.5rem;
+
+    a {
+      text-decoration: none;
+    }
 
     .circles-li {
       display: flex;
@@ -140,11 +153,15 @@ const Container = styled.div<ContainerProps>`
         letter-spacing: 0.08525rem;
         text-transform: uppercase;
         text-decoration: none !important;
+        cursor: pointer;
       }
     }
   }
   .ul-2 {
     display: none;
+    a {
+      text-decoration: none;
+    }
   }
   @media (min-width: 797px) {
     .header-box {
@@ -172,9 +189,6 @@ const Container = styled.div<ContainerProps>`
           list-style-type: none;
           opacity: 0.7;
         }
-        li:hover{
-          opacity: 1;
-        }
       }
 
       img {
@@ -188,11 +202,33 @@ const Container = styled.div<ContainerProps>`
   }
 
   @media (min-width: 1440px) {
-    .header-box{
+    .header-box {
       flex-direction: row;
 
-      ul{
+      ul {
         gap: 2.06rem;
+        li {
+          cursor: pointer;
+          position: relative;
+        }
+        li:hover,
+        li:focus {
+          opacity: 1;
+        }
+        li::after {
+          content: "";
+          height: 3px;
+          width: 100%;
+          background-color: ${(props) => props.color};
+          position: absolute;
+          left: 0;
+          bottom: -2.25rem;
+          opacity: 0;
+        }
+        li:hover::after,
+        li:focus::after {
+          opacity: 1;
+        }
       }
     }
   }
