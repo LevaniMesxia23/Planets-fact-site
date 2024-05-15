@@ -3,7 +3,6 @@ import styled from "styled-components";
 import data from "../../starter-code/data.json";
 import Burger from "../../public/assets/icon-hamburger.svg";
 import { Link } from "react-router-dom";
-import  { keyframes } from "styled-components";
 import { MyContext } from "../App";
 
 interface Planet {
@@ -13,11 +12,14 @@ interface Planet {
 
 interface ContainerProps {
   isOpen: boolean;
+  planetClick: boolean;
+  setPlanetClick: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Header() {
   const { clicked, setClicked } = useContext(MyContext);
   const [isOpen, setIsOpen] = useState(true);
+  const [planetClick, setPlanetClick] = useState(false);
 
   const planets: Planet[] = data;
   const handleBurgerClick = () => {
@@ -25,12 +27,15 @@ export default function Header() {
   };
   const handlePlanetClick = () => {
     setIsOpen(!isOpen);
-    setClicked(!clicked)
+    setClicked(!clicked);
   };
 
+  const handleDesktopPlanet = () => {
+    setPlanetClick(!planetClick);
+  };
 
   return (
-    <Container isOpen={isOpen}>
+    <Container isOpen={isOpen} planetClick={planetClick}>
       <div className="header-box">
         <span className="the-planets">THE PLANETS</span>
         <img src={Burger} alt="burger" onClick={handleBurgerClick} />
@@ -38,7 +43,12 @@ export default function Header() {
           {planets.map((planet, index) => (
             <Link to={`/${planet.name}`} key={index}>
               <div>
-                <li>{planet.name}</li>
+                <li
+                  onClick={handleDesktopPlanet}
+                  className={planetClick ? "active" : ""}
+                >
+                  {planet.name}
+                </li>
               </div>
             </Link>
           ))}
@@ -178,6 +188,7 @@ const Container = styled.div<ContainerProps>`
       .ul-2 {
         display: flex;
         justify-content: space-between;
+
         li {
           color: #fff;
           font-size: 0.6875rem;
@@ -188,6 +199,19 @@ const Container = styled.div<ContainerProps>`
           text-transform: uppercase;
           list-style-type: none;
           opacity: 0.7;
+          position: relative;
+
+          li.active {
+            content: "";
+            height: 3px;
+            width: 100%;
+            background-color: red;
+            position: absolute;
+            left: 0;
+            top: -2.25rem;
+            opacity: 0;
+            transition: all 0.4s;
+          }
         }
       }
 

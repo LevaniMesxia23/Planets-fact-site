@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
 import data from "../../starter-code/data.json";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { MyContext } from "../App";
+import styled from "styled-components";
 
 interface Planet {
   name: string;
@@ -184,19 +184,19 @@ export default function Planets() {
     </>
   );
 }
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: rotate(0deg);
-  }
-  25%{
-    transform: rotate(-45deg);
-  }
-  to {
-    opacity: 1;
-    transform: rotate(360deg);
-  }
-`;
+// const fadeIn = keyframes`
+//   from {
+//     opacity: 0;
+//     transform: rotate(0deg);
+//   }
+//   25%{
+//     transform: rotate(-45deg);
+//   }
+//   to {
+//     opacity: 1;
+//     transform: rotate(360deg);
+//   }
+// `;
 
 const Container = styled.div`
   .header-box {
@@ -323,11 +323,11 @@ const Container = styled.div`
         border: 1px solid rgba(255, 255, 255, 0.5);
         opacity: 0.7;
       }
-      span:nth-child(1){
+      span:nth-child(1) {
         background-color: ${(props) => props.color};
       }
       span:hover,
-      span:focus{
+      span:focus {
         background-color: ${(props) => props.color};
       }
 
@@ -383,7 +383,11 @@ const ImageBox = styled.div`
   position: relative;
 
   .main-image {
-    animation: ${fadeIn} 1s ease-in-out;
+    transition: all 1s ease;
+  }
+  .main-image:hover {
+    transition: transform 2s ease;
+    transform: rotate(360deg);
   }
   .surface-img {
     width: 9.29738rem;
@@ -445,7 +449,6 @@ const BottomBox = styled.div`
     margin-top: 3.75rem;
     div {
       color: #fff;
-      font-family: Antonio;
       font-size: 2.5rem;
       font-style: normal;
       font-weight: 400;
