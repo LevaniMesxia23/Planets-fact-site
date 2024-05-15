@@ -13,7 +13,6 @@ interface Planet {
 interface ContainerProps {
   isOpen: boolean;
   planetClick: boolean;
-  setPlanetClick: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Header() {
