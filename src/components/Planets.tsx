@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import data from "../../starter-code/data.json";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useContext } from "react";
 import { MyContext } from "../App";
 import styled from "styled-components";
@@ -66,8 +66,15 @@ export default function Planets() {
   };
 
   const [opacity, setOpacity] = useState(true);
-
   const [isDesktop, setIsDesktop] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
+
+  const handleTabChange = (tab: SetStateAction<string>) => {
+    setActiveTab(tab);
+    setImages(tab);
+    setOpacity(opacity);
+  };
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -154,9 +161,24 @@ export default function Planets() {
             </div>
             {isDesktop ? (
               <div className="header-box">
-                <span onClick={handleOverview}>OVERVIEW</span>
-                <span onClick={handleStructure}>Structure</span>
-                <span onClick={handleGeology}>Surface</span>
+                <span
+                  onClick={() => handleTabChange('overview')}
+                  className={activeTab === 'overview' ? 'active' : ''}
+                >
+                  OVERVIEW
+                </span>
+                <span
+                  onClick={() => handleTabChange('structure')}
+                  className={activeTab === 'structure' ? 'active' : ''}
+                >
+                  Structure
+                </span>
+                <span
+                  onClick={() => handleTabChange('geology')}
+                  className={activeTab === 'geology' ? 'active' : ''}
+                >
+                  Surface
+                </span>
               </div>
             ) : null}
           </div>
@@ -184,19 +206,6 @@ export default function Planets() {
     </>
   );
 }
-// const fadeIn = keyframes`
-//   from {
-//     opacity: 0;
-//     transform: rotate(0deg);
-//   }
-//   25%{
-//     transform: rotate(-45deg);
-//   }
-//   to {
-//     opacity: 1;
-//     transform: rotate(360deg);
-//   }
-// `;
 
 const Container = styled.div`
   .header-box {
@@ -219,24 +228,12 @@ const Container = styled.div`
       transition: all 0.8s;
       cursor: pointer;
     }
-    span:hover,
-    span:focus {
+    span.active {
       opacity: 1;
-    }
-    span::after {
-      content: "";
-      height: 3px;
-      width: 100%;
       background-color: ${(props) => props.color};
-      position: absolute;
-      left: 0;
-      bottom: -1.25rem;
-      opacity: 0;
-      transition: all 0.4s;
     }
-    span:hover::after,
-    span:focus::after {
-      opacity: 0.7;
+    span.active::after {
+      opacity: 1;
     }
   }
 
@@ -323,18 +320,7 @@ const Container = styled.div`
         border: 1px solid rgba(255, 255, 255, 0.5);
         opacity: 0.7;
       }
-      span:nth-child(1) {
-        background-color: ${(props) => props.color};
-      }
-      span:hover,
-      span:focus {
-        background-color: ${(props) => props.color};
-      }
-
-      span:hover::after,
-      span:focus::after {
-        opacity: 0;
-      }
+      
     }
   }
   @media (min-width: 1440px) {
